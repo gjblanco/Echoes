@@ -10,6 +10,7 @@ import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow
 import $ from 'jquery';
 import moment from 'moment';
 import UpdateBox from './UpdateBox.jsx';
+import AudioPlayer from 'react-responsive-audio-player';
 
 
 const style = {
@@ -174,7 +175,11 @@ class Entry extends React.Component {
                           {cursor: 'pointer'} }
                           >{song.trackName}</a>
                           {song.trackId === this.state.song.songId && <br />}
-                          {song.trackId === this.state.song.songId && <audio src={this.state.song.songUrl} autoPlay controls></audio>}
+                          {song.trackId === this.state.song.songId && 
+                            <AudioPlayer playlist={[{url: this.state.song.songUrl, displayText: ''}]} 
+                            autoplay={true} hideForwardSkip={true} hideBackSkip={true}/>}
+                          {/*song.trackId === this.state.song.songId && 
+                            <audio src={this.state.song.songUrl} autoPlay controls></audio>*/}
                       </TableRowColumn>
                       <TableRowColumn colSpan="1">
                         {song.trackTimeMillis && Math.floor(song.trackTimeMillis / 1000 / 60)}:{song.trackTimeMillis && (Math.floor(song.trackTimeMillis / 1000 % 60) >= 10? '' : '0') + Math.floor(song.trackTimeMillis / 1000 % 60)}
