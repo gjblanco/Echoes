@@ -466,36 +466,10 @@ img.albumArt {
   landing parallax
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 */
-#parallax-bg1 {
-  z-index: 1;
-  position: fixed;
-  left: 50%; /* align left edge with center of viewport */
-  top: 0;
-  width: 1200px;
-  margin-left: -600px; /* move left by half element's width */
-  }
-  #bg1-1 {
-    position: absolute;
-    top: 85px;
-    left: -270px;
-    }
-  #bg1-2 {
-    position: absolute;
-    top: 440px;
-    left: 795px;
-    }
-  #bg1-3 {
-    position: absolute;
-    top: 900px;
-    left: -220px;
-    }
-  #bg1-4 {
-    position: absolute;
-    top: 1020px;
-    left: 450px;
-    }
-  #bg1-5 {
-    position: absolute;
-    top: 1440px;
-    left: 220px;
-    }
+body>#bg1 {
+  position: absolute;
+  z-index:-3;
+}
+#i1{
+  position: absolute;
+}
