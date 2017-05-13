@@ -460,3 +460,16 @@ td {
 img.albumArt {
   cursor: pointer;
 }
+
+/*
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  landing parallax
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+*/
+body>#bg1 {
+  position: absolute;
+  z-index:-3;
+}
+#i1{
+  position: absolute;
+}
