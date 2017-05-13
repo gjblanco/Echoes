@@ -11,11 +11,12 @@ import SortEntries from './SortEntries.jsx'
 import Search from './Search.jsx';
 import EntryList from './EntryList.jsx';
 import ThrowBackImpression from './ThrowBackImpression.jsx';
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+import CreateImpressionForm from './CreateImpressionForm.jsx';
 import AudioPlayer from 'react-responsive-audio-player';
 
-injectTapEventPlugin();
 
-// sets color sets for Material UI components
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: blueGrey900,
@@ -29,6 +30,7 @@ const muiTheme = getMuiTheme({
     height: 50,
   },
 });
+injectTapEventPlugin();
 
 class App extends React.Component {
   constructor (props) {
@@ -258,57 +260,39 @@ class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
-          <div className="container-fluid app">
-            <header className="navbar">
-              <div><h2 className="greeting">{this.greetUser()}</h2></div>
-              <a href="/signout" className='navbar-right signout'>
-                <button className="btn btn-default landing"><span>Sign Out</span></button>
-              </a>
-              <img class="header logo" src="styles/girl-logo.png"/>
-            </header>
-
-            <Dialog
-              title="1 Year Ago Today..."
-              modal={false}
-              open={this.state.impressThrowBack}
-              actions= {
-                <FlatButton
-                  label="Close"
-                  primary={true}
-                  onTouchTap={this.handleClose}
-                />
-              }
-            >
-              <ThrowBackImpression
-                allEntries={this.state.throwBackEntries}
+      <div>
+        <div className="container-fluid app">
+          <header className="navbar">
+            <div><h2 className="greeting">{this.greetUser()}</h2></div>
+            <CreateImpressionForm updateUserEntries={this.updateUserEntries}
+              getUserEntries={this.getUserEntries} />
+            <a href="/signout" className='navbar-right signout'>
+              <button className="btn btn-default landing"><span>Sign Out</span></button>
+            </a>
+            <img className='navbar-center header logo' src="styles/logo.svg"></img>
+          </header>
+          <div  className="col-md-2 search">
+            <SortEntries
+              handleSortByAlbum={this.toggleSortAlbum}
+              handleSortByArtist={this.toggleSortArtist}
+              handleSortByHighest={this.toggleSortHighest}
+              handleSortByLowest={this.toggleSortLowest}
+              disableSorts={this.disableSorts}
+            />
+          </div>
+          <div className="col-md-10">
+            <table className="table-responsive table">
+              <EntryList
+                allEntries={this.state.allEntries}
+                sortByAlbum={this.state.sortByAlbum}
+                sortByArtist={this.state.sortByArtist}
+                sortByRatingLowest={this.state.sortByRatingLowest}
+                sortByRatingHighest={this.state.sortByRatingHighest}
+                updateUserEntries={this.updateUserEntries}
+                getUserEntries={this.getUserEntries}
+                deleteUserEntries={this.deleteUserEntries}
               />
-            </Dialog>
-            <div className="entries-container">
-              <div className="col-md-2 search">
-                <SortEntries
-                  handleSortByAlbum={this.toggleSortAlbum}
-                  handleSortByArtist={this.toggleSortArtist}
-                  handleSortByHighest={this.toggleSortHighest}
-                  handleSortByLowest={this.toggleSortLowest}
-                  disableSorts={this.disableSorts}
-                />
-                <Search getUserEntries={this.getUserEntries}/>
-              </div>
-              <div className="col-md-10">
-                  <EntryList
-                    allEntries={this.state.allEntries}
-                    sortByAlbum={this.state.sortByAlbum}
-                    sortByArtist={this.state.sortByArtist}
-                    sortByRatingLowest={this.state.sortByRatingLowest}
-                    sortByRatingHighest={this.state.sortByRatingHighest}
-                    updateUserEntries={this.updateUserEntries}
-                    getUserEntries={this.getUserEntries}
-                    deleteUserEntries={this.deleteUserEntries}
-                    playSong={this.playSong.bind(this)}
-                    song={this.state.song}
-                  />
-              </div>
+            </table>
             </div>
           </div>
 

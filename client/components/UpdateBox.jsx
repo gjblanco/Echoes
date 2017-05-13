@@ -80,9 +80,9 @@ class UpdateBox extends React.Component {
                   title="Confirm Removal"
                   actions={[
                     <FlatButton label="Cancel" primary={true}
-                      onClick={this.closeModals} />,
+                      onClick={this.closeModals.bind(this)} />,
                     <FlatButton label="Continue" primary={true}
-                      onClick={this.handleDelete} />
+                      onClick={this.handleDelete.bind(this)} />
                   ]}
                   modal={false}
                   open={this.state.confirmDeletionModalActive}
@@ -90,8 +90,6 @@ class UpdateBox extends React.Component {
                 >
                   Confirm the deletion of this album
              </Dialog>
-
-
             )
           }
 

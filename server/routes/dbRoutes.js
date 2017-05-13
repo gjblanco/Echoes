@@ -22,7 +22,6 @@ router.get('/', function (req, res) {
       .orderBy('album_impression.date', 'desc')
       .then(function (result) {
         // send the result back to the user
-        console.log(result);
         res.status(200).send(result);
       })
       .catch(function (err) {
@@ -43,7 +42,7 @@ function insertIfNeeded(table, fields, keys, errMessage) {
     }
   })
   .catch(function(e){
-    console.log(errMessage, e);
+    console.log('', errMessage, e);
     throw e;
   });
 }
@@ -53,7 +52,7 @@ router.post('/', function(req, res) {
   var album = req.body.album;
   var date = req.body.date.slice(0, 10); ///full date
   var username = req.cookies.username;
-  
+
   insertIfNeeded('artist', {name: album.artistName}, {name: album.artistName})
   .then(function(artistId) {
       artistId = artistId[0].id || artistId[0];
@@ -62,26 +61,31 @@ router.post('/', function(req, res) {
                   artist_id: artistId,                      ///INSERT ALBUM
                   genre: album.primaryGenreName,
                   year: album.releaseDate.slice(0,4),
-                  art_url60: album.artworkUrl60,
-                  art_url100: album.artworkUrl100
-                 } 
+                  art_url60: album.albumArtUrl,
+                  art_url100: album.albumArtUrl
+                 }
                  ,{title: album.collectionName, artist_id: artistId})
       .then(function(albumId) {
         albumId = albumId[0].id || albumId[0];
         knex('users').select('id').where({username: username})
         .then(function(userId){
           userId = userId[0].id || artistId[0];
-          
+
           insertIfNeeded('album_impression',
                           { user_id: userId, album_id: albumId, date:date },
                           { user_id: userId, album_id: albumId, date:date })
-          .then((id)=>{res.status(201).send('Success ' + id[0])})
-          .catch((e)=>res.status(401).send('error occurred' + e));
+          .then((id)=>{
+            var i = id[0].id || id[0];
+            res.status(201).send(JSON.stringify(i));
+          })
+          .catch((e)=>{
+            res.status(401).send('error occurred' + e)
+          });
         })
       })
   })
-  
-  
+
+
 })
 
 
@@ -91,8 +95,6 @@ router.post('/update', function (req, res) {
   var id = Number(impress.id);
   var rating = Number(impress.rating);
   var impression = impress.impression;
-  console.log('impress', impress);
-
   // if impression exists and rating doesn't
   if (impression && !rating) {
     knex('album_impression')
@@ -119,7 +121,7 @@ router.post('/update', function (req, res) {
     .where('id', impress.id)
     //update impression and rating w/ req.body
     .update({
-      impression:impress.impression,
+      impression: impress.impression,
       rating: impress.rating
     }).then(function () {
       res.status(201).end();
@@ -135,7 +137,6 @@ router.post('/update', function (req, res) {
 router.post('/delete', function (req, res) {
   var listenEntry = req.body; //.impressionId and .date
   //find the listen_date Entry
-  
   knex('album_impression')
     .where('id', req.body.impressionId)
     .del()

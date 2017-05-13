@@ -10,6 +10,7 @@ import { Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow
 import $ from 'jquery';
 import moment from 'moment';
 import UpdateBox from './UpdateBox.jsx';
+import './Entry.css';
 
 const style = {
   height: 100,
@@ -205,6 +206,7 @@ class Entry extends React.Component {
             <span className='day'><h4>{this.props.date.slice(8, 10)}</h4></span>
             <span className='year'>{this.props.date.slice(0,4)}</span>
           </TableRowColumn>
+
           <TableRowColumn colSpan="2" style={{ width: '110px', padding: '0'}}>
             <h3><img className='albumArt' src={this.props.art_url100}
                 onClick={(e)=>{
